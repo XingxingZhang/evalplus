@@ -59,7 +59,7 @@ Below tracks the notable updates of EvalPlus:
 ### Code Correctness Evaluation: HumanEval(+) or MBPP(+)
 
 ```bash
-pip install --upgrade "evalplus[vllm] @ git+https://github.com/evalplus/evalplus"
+pip install --upgrade "evalplus[vllm] @ git+https://github.com/XingxingZhang/evalplus"
 # Or `pip install "evalplus[vllm]" --upgrade` for the latest stable release
 
 evalplus.evaluate --model "ise-uiuc/Magicoder-S-DS-6.7B" \
