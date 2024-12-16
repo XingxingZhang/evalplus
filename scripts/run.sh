@@ -11,11 +11,11 @@ mkdir -p ${PLUS_DIR}
 identifier=evalplus
 
 
-PYTHONPATH=../evalplus evalplus.evaluate --model ${MODEL_PATH} --dataset mbpp --backend vllm --greedy \
+PYTHONPATH=.. evalplus.evaluate --model ${MODEL_PATH} --dataset mbpp --backend vllm --greedy \
     --root ${PLUS_DIR} --model_identifier "evalplus"
 
 
-PYTHONPATH=../evalplus evalplus.evaluate --model ${MODEL_PATH} --dataset humaneval --backend vllm --greedy \
+PYTHONPATH=.. evalplus.evaluate --model ${MODEL_PATH} --dataset humaneval --backend vllm --greedy \
     --root ${PLUS_DIR} --model_identifier "evalplus"
 
 

@@ -9,6 +9,7 @@ from evalplus.provider.utility import (
     make_raw_chat_prompt,
 )
 
+DEBUG = False
 
 class VllmDecoder(DecoderBase):
     def __init__(
@@ -37,6 +38,8 @@ class VllmDecoder(DecoderBase):
             self.eos += extra_eos_for_direct_completion(dataset)
         else:
             self.eos += ["\n```\n"]
+            # if dataset.lower() == 'mbpp':
+            #     self.eos += ["\nassert"]
         self.llm = LLM(model=name, max_model_len=2048, **kwargs)
 
     def is_direct_completion(self) -> bool:
@@ -49,6 +52,12 @@ class VllmDecoder(DecoderBase):
             assert self.temperature > 0, "Temperature must be greater than 0!"
         batch_size = min(self.batch_size, num_samples)
 
+        # for debug
+        if DEBUG:
+            print("stop tokens", self.eos)
+            print(f"** orig prompt")
+            print(prompt)
+            print('+' * 30)
         prompt = (
             prompt
             if self.is_direct_completion()
@@ -56,6 +65,11 @@ class VllmDecoder(DecoderBase):
                 prompt, self.instruction_prefix, self.response_prefix, self.tokenizer
             )
         )
+        # for debug
+        if DEBUG:
+            print(f"** new prompt")
+            print(prompt)
+            print('+' * 30 + "\n\n")
 
         vllm_outputs = self.llm.generate(
             [prompt] * batch_size,
@@ -67,6 +81,11 @@ class VllmDecoder(DecoderBase):
             ),
             use_tqdm=False,
         )
+
+        if DEBUG:
+            print('*** output ***')
+            print(vllm_outputs[0].outputs[0].text)
+            print('+' * 30 + "\n\n")
 
         gen_strs = [x.outputs[0].text.replace("\t", "    ") for x in vllm_outputs]
         return gen_strs
